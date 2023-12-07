@@ -40,7 +40,7 @@ SpadesQueen = Cards("Spades", "Queen")
 SpadesKing = Cards("Spades", "King")
 
 
-print (Hearts2)
+# print (Hearts2)
 
 def go(starting: str) -> None:
     Game_start = True
@@ -77,10 +77,10 @@ def go(starting: str) -> None:
         def winner_(a : int, b: int) -> int: 
             if a == b:
                 print("Draw")
-            elif a>b:
+            if a > b:
                 print("You win")
             else:
-                print("You Loose")
+                print("You Lose")
 
         player1_points = 0
         comp_points = 0
@@ -101,7 +101,11 @@ def go(starting: str) -> None:
             Your_turn = True
             
             while Your_turn:
-                user_choice = [input("What Card do you want?\n")]
+                if player1_points == 3 or comp_points == 3:
+                    print(f"Game Over. Your score is: {player1_points} Computer score is: {comp_points}")
+                    return Game_start == False
+
+                user_choice = [input("What Card do you want? \n")]
                 for card in user_choice:
                     if card in comp_hand:
                         print(f"{card} in comp_hand")
@@ -116,11 +120,11 @@ def go(starting: str) -> None:
                         continue
                     else:
                         print(f"{card} not in comp_hand. Go FISH!")
-                        if len(Deck) is 0:
+                        if len(Deck) == 0:
                             print("The Deck is Empty. You cannot go Fish. Game Over")
                             print(f"Your points: {player1_points}, Computers points: {comp_points}")
                             winner_(player1_points, comp_points)
-                            Your_turn = False
+                            return Your_turn == False
                             break
                             
                         else:
@@ -129,38 +133,37 @@ def go(starting: str) -> None:
                             if not card in player1_hand: 
                                 player1_hand.append(Card)
                                 print(player1_hand)
-                while comp_turn:
-                    if len(Deck) is 0:
-                            print("The Deck is Empty. You cannot go Fish. Game Over")
-                            print(f"Your points: {player1_points}, Computers points: {comp_points}")
-                            winner_(player1_points, comp_points)
-                            comp_turn = False
-                            break
-                    else:
-                        comp_choice = random.choice(cards_list)
-                        if comp_choice in player1_hand:
-                            print(f"{comp_choice} in Your hand, You SUCK")
-                            Card = player1_hand.index(comp_choice)
-                            New_Card = player1_hand[Card]
-                            player1_hand.remove(New_Card)
-                            comp_hand.append(New_Card)
-                            print(f"Comp has taken your card")
-                            comp_points+=1 
-                            continue
-                            # if player1_hand == []:
-                            #     print("Game Over")
-                            #     Game_start = False
-                        else: 
-                            print(f"{comp_choice} not in Your hand. Comp, GO FISH!")
-                            Card = random.choice(Deck)
-                            Deck.remove(Card)
-                            comp_hand.append(New_hand)
-                            break
+                    while comp_turn:
+                        if len(Deck) == 0:
+                                print("The Deck is Empty. You cannot go Fish. Game Over")
+                                print(f"Your points: {player1_points}, Computers points: {comp_points}")
+                                winner_(player1_points, comp_points)
+                                return comp_turn == False
+                                break
+                        else:
+                            comp_choice = random.choice(cards_list)
+                            if comp_choice in player1_hand:
+                                print(f"{comp_choice} in Your hand, You SUCK")
+                                Card = player1_hand.index(comp_choice)
+                                New_Card = player1_hand[Card]
+                                player1_hand.remove(New_Card)
+                                comp_hand.append(New_Card)
+                                print(f"Comp has taken your card")
+                                comp_points+=1 
+                                continue
+                                # if player1_hand == []:
+                                #     print("Game Over")
+                                #     Game_start = False
+                            else: 
+                                print(f"{comp_choice} not in Your hand. Comp, GO FISH!")
+                                Card = random.choice(Deck)
+                                Deck.remove(Card)
+                                comp_hand.append(New_hand)
+                                break
         
         elif end_condition(choice):
             print("Game Over")
-            Game_start = False
-            print(f"Your points: {player1_points}, Computers points: {comp_points}")
+            return Game_start == False
 
     if comp_turn == False or Your_turn == False:
         print("Game Over")
