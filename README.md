@@ -1,6 +1,6 @@
 # Digital_Ready_Project
 Nijo and Peyton
-Go Fish+ 
+The name of the game is Go Fish+ 
 1 Player vs Computer
 
 Rules:
